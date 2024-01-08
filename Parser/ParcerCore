@@ -1,0 +1,43 @@
+import requests
+import pandas as pd
+
+def parse_matches_and_save(match_ids, output_file='matches_data.csv'):
+    data = []
+
+    for match_id in match_ids:
+        # Формируем URL для запроса к API OpenDota с использованием match_id
+        url = f"https://api.opendota.com/api/matches/{match_id}"
+
+        # Отправляем GET-запрос к API
+        response = requests.get(url)
+
+        # Проверяем успешность запроса
+        if response.status_code == 200:
+            # Получаем данные в формате JSON
+            match_data = response.json()
+
+            # Добавляем информацию о матче в список
+            data.append({
+                'Match ID': match_data['match_id'],
+                'Длительность': match_data['duration'],
+                'Победитель': 'Radiant' if match_data['radiant_win'] else 'Dire'
+                # Дополнительные поля могут быть добавлены по вашему выбору
+            })
+
+        else:
+            print(f"Ошибка при запросе {match_id}: {response.status_code}")
+
+    # Создаем DataFrame с использованием pandas
+    df = pd.DataFrame(data, columns=['Match ID', 'Длительность', 'Победитель'])
+
+    # Сохраняем DataFrame в файл CSV
+    df.to_csv(output_file, index=False)
+    print(f"Данные сохранены в файл: {output_file}")
+
+match_id_1 = 123456789
+match_id_2 = 987654321
+match_id_3 = 555666777
+
+# Пример использования парсера для нескольких match_id и сохранение в файл
+match_ids_to_parse = [match_id_1, match_id_2, match_id_3]  # Заменить на нужные айди
+parse_matches_and_save(match_ids_to_parse)
