@@ -15,6 +15,8 @@ def parse_matches_and_save(match_ids, output_file='matches_data.csv'):
         if response.status_code == 200:
             # Получаем данные в формате JSON
             match_data = response.json()
+
+
             # Извлекаем информацию о пиках и банах
             picks_bans = match_data.get('picks_bans', [])
 
@@ -31,6 +33,16 @@ def parse_matches_and_save(match_ids, output_file='matches_data.csv'):
                 team_list.append(pick_ban['team'])
                 order_list.append(pick_ban['order'])
 
+            # Извлекаем информацию о игроках
+            players = match_data.get('players', [])
+
+            # Инициализируем списки для каждого атрибута игрока (можно еще добавить)
+            account_id_list = []
+
+            # Обрабатываем каждый элемент массива 'players'
+            for player in players:  
+                account_id_list.append(player['account_id'])
+                
             # Добавляем информацию о матче в список
             data.append({
                 'Match ID': match_data['match_id'],
@@ -40,7 +52,11 @@ def parse_matches_and_save(match_ids, output_file='matches_data.csv'):
                 'Is_Pick': is_pick_list,
                 'Hero_ID': hero_id_list,
                 'Team': team_list,
-                'Order': order_list
+                'Order': order_list,
+                # Добавляем информацию о игроках и командах
+                'Radiant_team': match_data['radiant_team'],
+                'Dire_team': match_data['dire_team'],
+                'Account_id': account_id_list
                 # Дополнительные поля могут быть добавлены по вашему выбору
             })
 
@@ -48,7 +64,7 @@ def parse_matches_and_save(match_ids, output_file='matches_data.csv'):
             print(f"Ошибка при запросе {match_id}: {response.status_code}")
 
     # Создаем DataFrame с использованием pandas
-    df = pd.DataFrame(data, columns=['Match ID', 'Duration', 'Winer', 'Is_Pick', 'Hero_ID', 'Team', 'Order'])
+    df = pd.DataFrame(data, columns=['Match ID', 'Duration', 'Winer', 'Is_Pick', 'Hero_ID', 'Team', 'Order', 'Radiant_team', 'Dire_team', 'Account_id'])
 
     # Сохраняем DataFrame в файл CSV
     df.to_csv(output_file, index=False)
