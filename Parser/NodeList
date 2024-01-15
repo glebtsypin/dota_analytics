@@ -21,6 +21,22 @@ if __name__ == "__main__":
     Node_ParcerCore_Match()
 
 
+from ParcerCore_Player import save_player_info_to_csv
+
+if __name__ == "__main__":
+    # Запрашиваем количество игроков у пользователя
+    num_players = int(input("Введите количество игроков: "))
+
+    # Получаем список аккаунт-идентификаторов от пользователя
+    player_ids = []
+    for i in range(num_players):
+        account_id = int(input(f"Введите аккаунт-идентификатор игрока {i + 1}: "))
+        player_ids.append(account_id)
+
+    # Передаем список аккаунтов в функцию сохранения информации
+    save_player_info_to_csv(player_ids)
+
+
 
 #АЙДИШНИКИ ДЛЯ ТЕСТОВ
 #match_id_1 = 7531076460

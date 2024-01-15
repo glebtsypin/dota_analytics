@@ -1,0 +1,57 @@
+import requests
+import pandas as pd
+
+def fetch_player_info(account_id):
+    url = f'https://api.opendota.com/api/players/{account_id}'
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        player_info = response.json()
+        return player_info
+    else:
+        print(f"Failed to fetch player info for account_id {account_id}. Status code: {response.status_code}")
+        return None
+
+def save_player_info_to_csv(account_ids, output_file='player_info.csv'):
+    data = []
+
+    for account_id in account_ids:
+        player_info = fetch_player_info(account_id)
+
+        if player_info:
+            profile_data = player_info.get('profile', {})
+            solo_competitive_rank = player_info.get('solo_competitive_rank', 0)
+            competitive_rank = player_info.get('competitive_rank', 0)
+            rank_tier = player_info.get('rank_tier', 0)
+            leaderboard_rank = player_info.get('leaderboard_rank', 0)
+
+            data.append({
+                'account_id': profile_data.get('account_id', 0),
+                'personaname': profile_data.get('personaname', ''),
+                'name': profile_data.get('name', ''),
+                'plus': profile_data.get('plus', False),
+                'cheese': profile_data.get('cheese', 0),
+                'steamid': profile_data.get('steamid', ''),
+                'avatar': profile_data.get('avatar', ''),
+                'avatarmedium': profile_data.get('avatarmedium', ''),
+                'avatarfull': profile_data.get('avatarfull', ''),
+                'profileurl': profile_data.get('profileurl', ''),
+                'last_login': profile_data.get('last_login', ''),
+                'loccountrycode': profile_data.get('loccountrycode', ''),
+                'is_contributor': profile_data.get('is_contributor', False),
+                'is_subscriber': profile_data.get('is_subscriber', False),
+                'solo_competitive_rank': solo_competitive_rank,
+                'competitive_rank': competitive_rank,
+                'rank_tier': rank_tier,
+                'leaderboard_rank': leaderboard_rank
+            })
+
+    df = pd.DataFrame(data)
+    df.to_csv(output_file, index=False)
+    print(f"Player info for {len(account_ids)} accounts saved to {output_file}")
+
+
+if __name__ == "__main__":
+    # Замените account_ids на список актуальных идентификаторов игроков
+    account_ids = [172099728, 145065875]
+    save_player_info_to_csv(account_ids)
