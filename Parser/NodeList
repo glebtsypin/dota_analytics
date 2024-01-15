@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
 from ParcerCore_Player import save_player_info_to_csv
 
-if __name__ == "__main__":
+def Node_ParcerCore_Player():
     # Запрашиваем количество игроков у пользователя
     num_players = int(input("Введите количество игроков: "))
 
@@ -42,3 +42,6 @@ if __name__ == "__main__":
 #match_id_1 = 7531076460
 #match_id_2 = 7531158795
 #match_id_3 = 7531224646 
+#АЙДИШНИКИ ДЛЯ ТЕСТОВ ИГРОКОВ
+#172099728
+#145065875
