@@ -1,0 +1,28 @@
+
+# Импортируем функцию parse_matches_and_save из ParcerCore_Match
+from ParcerCore_Match import parse_matches_and_save
+
+def Node_ParcerCore_Match():
+    # Запрашиваем количество матчей у пользователя
+    num_matches = int(input("Введите количество матчей: "))
+
+    # Создаем список для хранения айди матчей
+    match_ids_to_parse = []
+
+    # Вводим айди матчей от пользователя
+    for i in range(1, num_matches + 1):
+        match_id = int(input(f"Введите айди матча {i}: "))
+        match_ids_to_parse.append(match_id)
+
+    # Передаем список айди матчей в функцию
+    parse_matches_and_save(match_ids_to_parse)
+
+if __name__ == "__main__":
+    Node_ParcerCore_Match()
+
+
+
+#АЙДИШНИКИ ДЛЯ ТЕСТОВ
+#match_id_1 = 7531076460
+#match_id_2 = 7531158795
+#match_id_3 = 7531224646 
