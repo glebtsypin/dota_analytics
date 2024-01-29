@@ -19,8 +19,8 @@ def parse_matches_and_save(match_ids, output_file='matches_data.csv'):
             # Добавляем информацию о матче в список
             data.append({
                 'Match ID': match_data['match_id'],
-                'Длительность': match_data['duration'],
-                'Победитель': 'Radiant' if match_data['radiant_win'] else 'Dire'
+                'Duration': match_data['duration'],
+                'Victory': 'Radiant' if match_data['radiant_win'] else 'Dire'
                 # Дополнительные поля могут быть добавлены по вашему выбору
             })
 

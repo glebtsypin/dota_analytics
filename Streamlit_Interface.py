@@ -1,7 +1,7 @@
 #st.experemental_rerun() - устарело в 1.27, у меня сейчас 1.26 (08.01.2024), вместо этого
 #используется st.rerun(). обе эти функции, чтобы кнопка работала с одного клика а не с дефолтных двух.
 import streamlit as st
-
+from Parser.ParcerCore import parse_matches_and_save
 # Remove Streamlit developer notes:
 hide_st_style = """
 <style>
@@ -50,7 +50,8 @@ def main():
     if st.session_state.current_page == 'main':
         st.subheader("Project Stage")
 
-        with st.form(key='match_id_form'):
+        with st.form(key='match_id_form', clear_on_submit=True):
+
             match_id = st.text_input("Enter Match ID (10 digits):")
             submit_button = st.form_submit_button(label='Enter')
 
@@ -58,8 +59,12 @@ def main():
             if is_valid_id(match_id):
                 st.session_state.match_ids.append(match_id)
                 st.success("ID added. Enter another or click Save.")
+
             else:
                 st.error("ID is in incorrect form! It contains only 10 numbers!")
+
+
+
 
         if st.session_state.match_ids:
             st.write("Stored IDs:")
@@ -68,6 +73,7 @@ def main():
 
             if st.button('Save IDs'):
                 st.session_state.menu_active = True
+                parse_matches_and_save(st.session_state.match_ids, output_file= "test_matches.csv")
                 change_page('request_stage')
                 st.experimental_rerun()
 
